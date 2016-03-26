@@ -7,4 +7,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="hello" >hello</string>
+    <string name = "use_marker_btn" >마커 버튼 사용하기</string>
+    <string name = "str_done" >완료</string>
 </resources>
