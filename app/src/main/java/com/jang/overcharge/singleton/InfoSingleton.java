@@ -9,11 +9,13 @@ public class InfoSingleton {
     private String clientId;
     private String cliendPassword;
     private String ipAddress;
+    private String daumApiKey;
 
 
     private InfoSingleton(){
         this.ipAddress = "192.168.0.8";
         this.clientId = "dBPDkOlS_gq9dLoSMaxF";
+        this.daumApiKey = "37bb67f541cdcd8129f2c3033cd0d955";
 
     }
 
@@ -40,5 +42,9 @@ public class InfoSingleton {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    public String getDaumApiKey(){
+       return this.daumApiKey;
     }
 }

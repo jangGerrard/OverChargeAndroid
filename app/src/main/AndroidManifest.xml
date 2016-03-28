@@ -3,10 +3,10 @@
     package="com.jang.overcharge">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -27,6 +27,14 @@
         <activity
             android:name=".mapviewer.MapActivity"
             android:label="@string/title_activity_map"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".mapviewer.daum.DaumMapActivity"
+            android:label="@string/title_activity_daum_map"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".mapviewer.tmap.TmapActivity"
+            android:label="@string/title_activity_tmap"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

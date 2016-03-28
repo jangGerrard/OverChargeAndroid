@@ -27,4 +27,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile project(':nmaps')
+    compile files('libs/libDaumMapAndroid.jar')
+    compile files('libs/daum_map_so.jar')
+    compile files('libs/com.skp.Tmap_1.0.37.jar')
 }
