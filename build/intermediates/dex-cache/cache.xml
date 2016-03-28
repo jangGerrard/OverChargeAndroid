@@ -1,12 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" >
+<items version="2" />
 
-    <item
-        jar="C:\Users\Jang\AndroidStudioProjects\OverCharge\app\libs\com.skp.Tmap_1.0.37.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="6b85dea7e38323c2b23534d75222c7506528e2ad">
-        <dex dex="C:\Users\Jang\AndroidStudioProjects\OverCharge\app\build\intermediates\pre-dexed\debug\com.skp.Tmap_1.0.37_2f4b951be117da237d40272f32df54da8335f3bf.jar" />
-    </item>
-
-</items>
