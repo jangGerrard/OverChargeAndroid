@@ -85,12 +85,15 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
+            ///won't use this in fucture
             Intent intent = new Intent(MainActivity.this, DaumMapActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_gallery) {
+            ///won't use this in fucture
             Intent intent = new Intent(MainActivity.this, MapActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
+            //main
             Intent intent = new Intent(MainActivity.this, TmapActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_manage) {

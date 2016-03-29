@@ -9,7 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jang.overcharge.R;
@@ -24,11 +27,23 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 public class TmapActivity extends AppCompatActivity implements TMapView.OnLongClickListenerCallback{
 
+    private LinearLayout linearLayout;
+
+    private TextView textView01;
+    private TextView textView02;
+
+    TMapView tmapView;
+    List<TMapMarkerItem> markerItems;
+
+    //해야 할 것은 무엇이냐면
+    //우선 길이 그거 어떻게 변환 할지 생각해보고,
+    //long click 할 때, 마커 추가하는거 되는지 보자
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,51 +60,66 @@ public class TmapActivity extends AppCompatActivity implements TMapView.OnLongCl
             }
         });
 
-        RelativeLayout relativeLayout = new RelativeLayout(this);
-        final TMapView tmapView = new TMapView(this);
-
+        //RelativeLayout relativeLayout = new RelativeLayout(this);
+        viewsInit();
+        tmapView = new TMapView(this);
         tmapView.setSKPMapApiKey("3ad22c95-c92e-3bee-914d-86106ac81679");
-
         tmapView.setLanguage(TMapView.LANGUAGE_KOREAN);
-
         tmapView.setIconVisibility(true);
-
         tmapView.setZoomLevel(10);
-
         tmapView.setMapType(TMapView.MAPTYPE_STANDARD);
-
         tmapView.setCompassMode(false);
-
         tmapView.setTrackingMode(false);
 
-        relativeLayout.addView(tmapView);
+        linearLayout.addView(tmapView);
 
-        setContentView(relativeLayout);
+    }
 
-        TMapPoint point1 = tmapView.getCenterPoint();
-        TMapPoint point2 = new TMapPoint(36.570841, 126.985302);
-
-        TMapData tmapdata = new TMapData();
-
-        tmapdata.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, point1, point2, new TMapData.FindPathDataListenerCallback() {
-            @Override
-            public void onFindPathData(TMapPolyLine polyLine) {
-                tmapView.addTMapPath(polyLine);
-                Log.d("tag : ", "distance : " + polyLine.getDistance());
-            }
-        });
-
-
+    private void viewsInit(){
+        linearLayout = (LinearLayout) findViewById(R.id.tmap_layout);
+        textView01 = (TextView)findViewById(R.id.textView01);
+        textView02 = (TextView)findViewById(R.id.textView02);
+        markerItems = new ArrayList<TMapMarkerItem>();
     }
 
     @Override
     public void onLongPressEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint) {
 
         Log.d("tag : ", "TmapMarkerList size : " + arrayList.size());
-        Log.d("tag : ", "point : " + tMapPoint.getLongitude() + ", "+ tMapPoint.getLatitude());
+        Log.d("tag : ", "point : " + tMapPoint.getLongitude() + ", " + tMapPoint.getLatitude());
+        Toast.makeText(getBaseContext(), "point : " + tMapPoint.getLongitude() + ", " + tMapPoint.getLatitude(), Toast.LENGTH_LONG).show();
+        textView01.setText("point : " + tMapPoint.getLongitude() + ", " + tMapPoint.getLatitude());
         TMapMarkerItem  markerItem = new TMapMarkerItem();
         markerItem.setTMapPoint(tMapPoint);
-        arrayList.add(markerItem);
+        //arrayList.add(markerItem);
+        tmapView.addMarkerItem("id",markerItem);
+        markerItems.add(markerItem);
+        findPath();
+
+    }
+
+    private void findPath(){
+        if(markerItems.size()< 2){
+            return;
+        }
+
+        int arrSize = markerItems.size();
+
+        TMapPoint startPoint = markerItems.get(arrSize - 1).getTMapPoint();
+        TMapPoint endPoint = markerItems.get(arrSize - 2).getTMapPoint();
+
+
+        TMapData tmapdata = new TMapData();
+
+        tmapdata.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, startPoint, endPoint, new TMapData.FindPathDataListenerCallback() {
+            @Override
+            public void onFindPathData(TMapPolyLine polyLine) {
+                tmapView.addTMapPath(polyLine);
+                Log.d("tag : ", "distance : " + polyLine.getDistance());
+                ///거리가 m단위 였음.
+                //m단위.
+            }
+        });
 
     }
 }
