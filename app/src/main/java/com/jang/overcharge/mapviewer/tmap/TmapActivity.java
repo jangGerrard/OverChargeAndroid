@@ -3,6 +3,8 @@ package com.jang.overcharge.mapviewer.tmap;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +30,7 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.LogManager;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -35,11 +38,13 @@ public class TmapActivity extends AppCompatActivity implements TMapView.OnLongCl
 
     private LinearLayout linearLayout;
 
-    private TextView textView01;
-    private TextView textView02;
+    private TextView startPointTv;
+    private TextView endPointTv;
+    private TextView distanceTv;
 
-    TMapView tmapView;
-    List<TMapMarkerItem> markerItems;
+    private TMapView tmapView;
+    private List<TMapMarkerItem> markerItems;
+    private double distance;
 
     //해야 할 것은 무엇이냐면
     //우선 길이 그거 어떻게 변환 할지 생각해보고,
@@ -60,8 +65,19 @@ public class TmapActivity extends AppCompatActivity implements TMapView.OnLongCl
             }
         });
 
-        //RelativeLayout relativeLayout = new RelativeLayout(this);
         viewsInit();
+        mapViewInit();
+    }
+
+    private void viewsInit(){
+        linearLayout = (LinearLayout) findViewById(R.id.tmap_layout);
+        startPointTv = (TextView)findViewById(R.id.start_tv);
+        endPointTv = (TextView)findViewById(R.id.end_tv);
+        distanceTv = (TextView)findViewById(R.id.distance_tv);
+        markerItems = new ArrayList<TMapMarkerItem>();
+    }
+
+    private void mapViewInit(){
         tmapView = new TMapView(this);
         tmapView.setSKPMapApiKey("3ad22c95-c92e-3bee-914d-86106ac81679");
         tmapView.setLanguage(TMapView.LANGUAGE_KOREAN);
@@ -72,14 +88,22 @@ public class TmapActivity extends AppCompatActivity implements TMapView.OnLongCl
         tmapView.setTrackingMode(false);
 
         linearLayout.addView(tmapView);
-
     }
 
-    private void viewsInit(){
-        linearLayout = (LinearLayout) findViewById(R.id.tmap_layout);
-        textView01 = (TextView)findViewById(R.id.textView01);
-        textView02 = (TextView)findViewById(R.id.textView02);
-        markerItems = new ArrayList<TMapMarkerItem>();
+    private void searchPointUsingPOIData(String str){
+        TMapData  tMapData = new TMapData();
+        tMapData.findTitlePOI(str, new TMapData.FindTitlePOIListenerCallback() {
+            @Override
+            public void onFindTitlePOI(ArrayList<TMapPOIItem> poiItem) {
+                for(int i = 0 ; i < poiItem.size(); i++ ){
+                    TMapPOIItem item = poiItem.get(i);
+                    Log.d("POI LOG","POI Name: " + item.getPOIName().toString() + ", " +
+                            "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
+                            "Point: " + item.getPOIPoint().toString());
+
+                }
+            }
+        });
     }
 
     @Override
@@ -87,15 +111,14 @@ public class TmapActivity extends AppCompatActivity implements TMapView.OnLongCl
 
         Log.d("tag : ", "TmapMarkerList size : " + arrayList.size());
         Log.d("tag : ", "point : " + tMapPoint.getLongitude() + ", " + tMapPoint.getLatitude());
-        Toast.makeText(getBaseContext(), "point : " + tMapPoint.getLongitude() + ", " + tMapPoint.getLatitude(), Toast.LENGTH_LONG).show();
-        textView01.setText("point : " + tMapPoint.getLongitude() + ", " + tMapPoint.getLatitude());
+        //Toast.makeText(getBaseContext(), "point : " + tMapPoint.getLongitude() + ", " + tMapPoint.getLatitude(), Toast.LENGTH_LONG).show();
+        startPointTv.setText("point : " + tMapPoint.getLongitude() + ", " + tMapPoint.getLatitude());
         TMapMarkerItem  markerItem = new TMapMarkerItem();
         markerItem.setTMapPoint(tMapPoint);
         //arrayList.add(markerItem);
-        tmapView.addMarkerItem("id",markerItem);
+        tmapView.addMarkerItem("id", markerItem);
         markerItems.add(markerItem);
         findPath();
-
     }
 
     private void findPath(){
@@ -107,7 +130,8 @@ public class TmapActivity extends AppCompatActivity implements TMapView.OnLongCl
 
         TMapPoint startPoint = markerItems.get(arrSize - 1).getTMapPoint();
         TMapPoint endPoint = markerItems.get(arrSize - 2).getTMapPoint();
-
+        startPointTv.setText("start point : " + startPoint.getLongitude() + ", " + startPoint.getLatitude());
+        endPointTv.setText("end point : " + endPoint.getLongitude() + ", " + endPoint.getLatitude());
 
         TMapData tmapdata = new TMapData();
 
@@ -115,9 +139,24 @@ public class TmapActivity extends AppCompatActivity implements TMapView.OnLongCl
             @Override
             public void onFindPathData(TMapPolyLine polyLine) {
                 tmapView.addTMapPath(polyLine);
-                Log.d("tag : ", "distance : " + polyLine.getDistance());
-                ///거리가 m단위 였음.
-                //m단위.
+
+                distance = polyLine.getDistance();
+                Log.d("tag : ", "distance : " + distance);
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable(){
+                            @Override
+                            public void run() {
+                                // 해당 작업을 처리함
+                                //distanceTv.setText(distance+"");
+                                distanceTv.setText("distance : "+distance/1000.0+"km");
+                                Log.d("ui Thread", "UI Thread" + ", distance : " + distance);
+                            }
+                        });
+                    }
+                }).start();
             }
         });
 
