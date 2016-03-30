@@ -11,4 +11,8 @@
     <string name="str_done">완료</string>
     <string name="title_activity_daum_map">DaumMapActivity</string>
     <string name="title_activity_tmap">TmapActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="start_sv_hint">시작 점</string>
+    <string name="end_sv_hint">끝 점</string>
+
 </resources>
