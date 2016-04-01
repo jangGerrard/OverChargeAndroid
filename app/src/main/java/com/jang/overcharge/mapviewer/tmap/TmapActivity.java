@@ -80,7 +80,7 @@ public class TmapActivity extends AppCompatActivity implements TMapView.OnLongCl
     private void mapViewInit(){
         tmapView = new TMapView(this);
         tmapView.setSKPMapApiKey("3ad22c95-c92e-3bee-914d-86106ac81679");
-        tmapView.setLanguage(TMapView.LANGUAGE_KOREAN);
+        tmapView.setLanguage(TMapView.LANGUAGE_CHINESE);
         tmapView.setIconVisibility(true);
         tmapView.setZoomLevel(10);
         tmapView.setMapType(TMapView.MAPTYPE_STANDARD);

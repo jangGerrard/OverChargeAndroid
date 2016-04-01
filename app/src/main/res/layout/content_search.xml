@@ -8,24 +8,45 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.jang.overcharge.SearchActivity"
     tools:showIn="@layout/activity_search">
-
-    <SearchView
-        android:id="@+id/start_searchView"
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:queryHint="@string/start_sv_hint"
-        />
-
-    <SearchView
-        android:id="@+id/end_searchView"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:queryHint="@string/end_sv_hint"
-        />
+        android:orientation ="horizontal"
+        >
+        <SearchView
+            android:id="@+id/start_searchView"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:queryHint="@string/start_sv_hint"
+            />
+
+        <SearchView
+            android:id="@+id/end_searchView"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:queryHint="@string/end_sv_hint"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/searchOnMapBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/searchOnMapBtn_text"/>
+    </LinearLayout>
+
 
     <ListView
         android:id="@+id/search_result_listView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"></ListView>
+        android:layout_height="0dp"
+        android:layout_weight="3"></ListView>
 
 </LinearLayout>

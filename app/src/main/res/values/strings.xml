@@ -14,5 +14,6 @@
     <string name="title_activity_search">SearchActivity</string>
     <string name="start_sv_hint">시작 점</string>
     <string name="end_sv_hint">끝 점</string>
+    <string name="searchOnMapBtn_text">지도에서 보기</string>
 
 </resources>
